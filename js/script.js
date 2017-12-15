@@ -1,7 +1,11 @@
 $(document).ready(function() {
     var rows = 6;
     var columns = 7;
-    var player1 = true;
+    var player = "red";
+    var streak;
+
+    // Set row + column in array
+    var currentPosition = [, ];
 
     var board = [
         [0, 0, 0, 0, 0, 0],
@@ -38,45 +42,75 @@ $(document).ready(function() {
         }
     };
 
-    // var move = function() {
-    //     var bodyHeight = board.height();
-    //     var footerOffsetTop = $("#moving").offset().top;
-    //     var topToBottom = bodyHeight - footerOffsetTop - $("#moving").outerHeight();
-    //
-    //     $("#moving").animate({
-    //         top: topToBottom,
-    //     }, 3000);
-    // };
-
-    $(".board").on("click", ".pos", function(event) {
-        event.preventDefault();
-        currentColumn = Number.parseInt(event.target.id.substring(0, 1));
-        currentRow = Number.parseInt(event.target.id.substring(1, 2));
-        board[currentColumn][currentRow - 1] = 1;
-        console.log(board);
-        if (player1) {
-            $(event.target).addClass("red");
-        } else {
-            $(event.target).addClass("blue");
-        }
-        check(board);
-        player1 = !player1;
-    });
-
     $(".up").on("click", ".pointer", function(event) {
         event.preventDefault();
-        var clickedColumn = event.target.id;
-        $("#" + clickedColumn + ".column").addClass("red");
+        var empty;
+        empty = $(".column").eq(event.target.id).children(".empty:last");
+        empty.removeClass("empty");
+        empty.addClass(player);
+
+        currentPosition = [$(empty).attr('id').slice(0, 1), $(empty).attr('id').slice(1, 2)];
+
+        check(board);
+        checkColumn(currentPosition);
+
+        if (player == "red") {
+            player = "blue";
+        } else {
+            player = "red";
+        }
+
     });
+
+
 
     generateBoard();
     generateUpper();
 
+    function checkColumn(currentPosition) {
+        streak = 0;
+        currentColumn = $(".column").eq(currentPosition[0]).children();
+
+        for (var i = 1; i < currentColumn.length; i++) {
+            console.log($(currentColumn[i]));
+            if ($(currentColumn[i]).hasClass(player)) {
+                streak = streak + 1;
+            } else {
+                streak = 0;
+            }
+
+            if (streak > 3) {
+                console.log("win!");
+                break;
+            }
+        }
+    }
+
+    function checkRow(currentPosition) {
+        streak = 0;
+        //
+        // currentRow =
+    }
+
 
     function check(board) {
-        var current;
-        var previous;
         var streak = 0;
+
+
+        // function checkHorizontal() {
+        //     for (i = 0; i < slots.length; i++) {
+        //         if (slots[i].classList.contains(curPlayer)) {
+        //             counter++
+        //             if counter >= 4 {
+        //
+        //             }
+        //         } else {
+        //             counter = 0;
+        //         }
+        //     }
+        //
+        // }
+
 
         function checkHorizontal(board) {
             for (var y = 0; y < rows; y++) {
