@@ -3,23 +3,36 @@
 }
 
 body {
+    align-items: center;
+    height: 100%;
+    font-family: 'Bungee', cursive;
+}
+
+.container {
+    display: flex;
+}
+
+.header {
     display: flex;
     flex-direction: row;
     align-items: center;
+    padding: 10px;
+    justify-content: space-between;
 }
 
 .game {
     display: flex;
+    left: 50%;
     flex-direction: column;
+    justify-content: center;
     width: 100%;
-    max-width: 620px;
 }
 
 .up {
     display: flex;
     flex-direction: row;
     justify-content: center;
-    height: 50px;
+    max-height: 150px;
 }
 
 .pointer:hover {
@@ -27,24 +40,25 @@ body {
 }
 
 .pointer {
+    margin: 0px 5px;
     border-radius: 50%;
     width: 50px;
     height: 50px;
-    margin: 0px 5px;
 }
 
 .board {
     display: flex;
     flex-direction: row;
     justify-content: center;
-    background-color: #1b286a;
     margin: 5px auto;
-    width: 440px;
-    height: 380px;
+    box-shadow: 4px 4px 2px 0 #455A64;
     border-top: 2px solid #ECEFF1;
     border-left: 2px solid #ECEFF1;
     border-radius: 20px;
-    box-shadow: 4px 4px 2px 0 #455A64;
+    background-color: #1b286a;
+    width: 440px;
+    height: 380px;
+    z-index: 99;
 }
 
 .column {
@@ -55,27 +69,32 @@ body {
 }
 
 .pos {
+    margin: 0px 5px;
+    border-radius: 50%;
     background-color: white;
     width: 50px;
     height: 50px;
-    border-radius: 50%;
-    margin: 0px 5px;
 }
 
 #moving {
     position: absolute;
     top: 0;
     left: 0;
-    width: 50px;
-    height: 50px;
     border-radius: 50%;
     background: red;
-}
-
-.coin {
     width: 50px;
     height: 50px;
-    margin: 0px 5px;
+}
+
+.empty {
+    background-image: linear-gradient(to bottom, white 50%, red 50%);
+    background-size: 100% 200%;
+    transition: background-position .01s ease;
+}
+
+.empty.show {
+    background-position: 0 100%;
+    transition: background-position 0s;
 }
 
 .hidden {
@@ -89,4 +108,61 @@ body {
 
 .blue {
     background-color: blue;
+}
+
+.below {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    height: 150px;
+}
+
+#modal {
+    display: none;
+    position: absolute;
+    z-index: 99;
+    box-shadow: 0px 0px 20px rgba(56, 56, 56, .2);
+    border-radius: 15px;
+    background-color: white;
+    padding: 20px 30px;
+    max-width: 500px;
+    height: 200px;
+    font-size: 2em;
+    text-align: center;
+}
+
+.logo {
+    position: relative;
+    margin-left: 15px;
+    border-radius: 50%;
+    background-color: #1b286a;
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    padding: 10px;
+    font-size: 25px;
+    color: white;
+}
+
+.logo:hover {
+    top: -5px;
+    transform: rotate(360deg);
+    transition: all 1s ease-in-out;
+    box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, .2);
+}
+
+.header h1 {
+    margin-bottom: 15px;
+    margin-left: 30px;
+}
+
+.players {
+    margin-left: auto;
+    font-size: 1.5em;
+}
+
+.pointer div {
+    position: absolute;
+    z-index: -1;
+    -webkit-transition: 1s;
 }

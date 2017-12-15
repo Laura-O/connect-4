@@ -26,13 +26,13 @@ $(document).ready(function() {
         var board = $(".board");
         for (var x = 0; x < columns; x++) {
             var column = $("<div>").addClass("column").attr("id", x);
-            for (var y = 0; y < rows + 1; y++) {
+            for (var y = 0; y < rows; y++) {
                 var row = $("<div>").addClass("pos empty").attr("id", `${x}${y}`);
                 column.append(row);
             }
             board.append(column);
         }
-        $(".column div:first-child").removeClass("pos empty").addClass("coin hidden");
+        // $(".column div:first-child").removeClass("pos empty").addClass("coin hidden");
     };
 
     var generateUpper = function() {
@@ -46,19 +46,22 @@ $(document).ready(function() {
     $(".up").on("click", ".pointer", function(event) {
         event.preventDefault();
 
-        var empty;
-        empty = $(".column").eq(event.target.id).children(".empty:last");
+
+        var empty = $(".column").eq(event.target.id).children(".empty:last");
+
+        animate(event.target.id);
         empty.removeClass("empty");
         empty.addClass(player);
 
-        currentPosition = [parseInt($(empty).attr('id').slice(0, 1)), parseInt($(empty).attr('id').slice(1, 2))];
+
+        currentPosition = [parseInt($(empty).attr("id").slice(0, 1)), parseInt($(empty).attr("id").slice(1, 2))];
 
         // Update board array
         if (player == "red") {
-            board[currentPosition[0]][currentPosition[1] - 1] = 1;
+            board[currentPosition[0]][currentPosition[1]] = 1;
             player = "blue";
         } else {
-            board[currentPosition[0]][currentPosition[1] - 1] = 2;
+            board[currentPosition[0]][currentPosition[1]] = 2;
             player = "red";
         }
 
@@ -70,54 +73,36 @@ $(document).ready(function() {
 
     generateBoard();
     generateUpper();
-
-    function checkColumn(currentPosition) {
-        streak = 0;
-        currentColumn = $(".column").eq(currentPosition[0]).children();
-
-        for (var i = 1; i < currentColumn.length; i++) {
-            if ($(currentColumn[i]).hasClass(player)) {
-                streak = streak + 1;
-            } else {
-                streak = 0;
-            }
-
-            if (streak > 3) {
-                console.log("win!");
-                break;
-            }
-        }
-    }
+    // winner();
 
     function checkVertical(currentPosition) {
         streak = 0;
+        var searchColumn = currentPosition[0];
+        var arr = [];
         for (var i = 0; i < board[currentPosition[0]].length; i++) {
-            if (board[currentPosition[0]][i] != 0 & board[currentPosition[0]][i] === board[currentPosition[0]][i + 1]) {
-                streak++;
-            } else {
-                streak = 0;
-            }
-            if (streak >= 3) {
-                console.log("win!");
-                break;
-            }
+            arr.push(board[searchColumn][i]);
+        }
+        if (arr.length >= 4) {
+            checkForWin(arr);
         }
     }
 
     function checkHorizontal(currentPosition) {
         // Array position: number of rows, currentrow, -upper row
-        var searchRow = currentPosition[1] - 1;
+        var searchRow = currentPosition[1];
 
         var arr = [];
         for (var i = 0; i < board.length; i++) {
             arr.push(board[i][searchRow]);
         }
-        checkForWin(arr);
+        if (arr.length >= 4) {
+            checkForWin(arr);
+        }
     }
 
     function checkSlash(currentPosition) {
         var searchColumn = currentPosition[0];
-        var searchRow = currentPosition[1] - 1;
+        var searchRow = currentPosition[1];
 
         var arr = [];
         while (searchColumn > 0 && searchRow < 5) {
@@ -136,7 +121,7 @@ $(document).ready(function() {
 
     function checkBackslash(currentPosition) {
         var searchColumn = currentPosition[0];
-        var searchRow = currentPosition[1] - 1;
+        var searchRow = currentPosition[1];
 
         var arr = [];
         while (searchColumn > 0 && searchRow > 0) {
@@ -162,9 +147,44 @@ $(document).ready(function() {
                 streak = 0;
             }
             if (streak >= 3) {
-                console.log("win!");
+                winner(player);
+                console.log("win");
                 break;
             }
         }
     }
+
+    function winner() {
+        $("#modal").show();
+        $("#modal").append("<div>Player " + player + " has won!</div>");
+    }
+
+    $("#close-modal").on("click", function() {
+        $("#modal").hide();
+    });
+
+    function animate() {
+        var delay = 0;
+        $(this).parent().children().each(function() {
+            var $el = $(this);
+            setTimeout(function() {
+                $el.addClass("show", 1000, "easeInOutQuad").stop().delay(50).queue(function() {
+                    $(this).removeClass('show');
+                });
+            }, delay += 50); // delay 100 ms
+        });
+    }
+    //
+    // $('.pos').click(function() {
+    //     var delay = 0;
+    //     $(this).parent().children().each(function() {
+    //         var $el = $(this);
+    //         setTimeout(function() {
+    //             $el.addClass("show", 1000, "easeInOutQuad").stop().delay(50).queue(function() {
+    //                 $(this).removeClass('show');
+    //             });
+    //         }, delay += 50); // delay 100 ms
+    //     });
+    // });
+
 });

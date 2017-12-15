@@ -43,3 +43,34 @@ function checkVertical(board) {
 
 checkHorizontal(board);
 checkVertical(board);
+
+function checkColumn(currentPosition) {
+    streak = 0;
+    currentColumn = $(".column").eq(currentPosition[0]).children();
+
+    for (var i = 1; i < currentColumn.length; i++) {
+        if ($(currentColumn[i]).hasClass(player)) {
+            streak = streak + 1;
+        } else {
+            streak = 0;
+        }
+
+        if (streak > 3) {
+            console.log("win!");
+            break;
+        }
+    }
+}
+
+
+
+
+// var move = function() {
+//     var bodyHeight = board.height();
+//     var footerOffsetTop = $("#moving").offset().top;
+//     var topToBottom = bodyHeight - footerOffsetTop - $("#moving").outerHeight();
+//
+//     $("#moving").animate({
+//         top: topToBottom,
+//     }, 3000);
+// };
