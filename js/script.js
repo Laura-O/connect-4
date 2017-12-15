@@ -7,6 +7,7 @@ $(document).ready(function() {
     // Set row + column in array
     var currentPosition = [, ];
 
+    // Inner array = column
     var board = [
         [0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0],
@@ -44,25 +45,28 @@ $(document).ready(function() {
 
     $(".up").on("click", ".pointer", function(event) {
         event.preventDefault();
+
         var empty;
         empty = $(".column").eq(event.target.id).children(".empty:last");
         empty.removeClass("empty");
         empty.addClass(player);
 
-        currentPosition = [$(empty).attr('id').slice(0, 1), $(empty).attr('id').slice(1, 2)];
+        currentPosition = [parseInt($(empty).attr('id').slice(0, 1)), parseInt($(empty).attr('id').slice(1, 2))];
 
-        check(board);
-        checkColumn(currentPosition);
-
+        // Update board array
         if (player == "red") {
+            board[currentPosition[0]][currentPosition[1] - 1] = 1;
             player = "blue";
         } else {
+            board[currentPosition[0]][currentPosition[1] - 1] = 2;
             player = "red";
         }
 
+        checkVertical(currentPosition);
+        checkHorizontal(currentPosition);
+        checkSlash(currentPosition);
+        checkBackslash(currentPosition);
     });
-
-
 
     generateBoard();
     generateUpper();
@@ -72,7 +76,6 @@ $(document).ready(function() {
         currentColumn = $(".column").eq(currentPosition[0]).children();
 
         for (var i = 1; i < currentColumn.length; i++) {
-            console.log($(currentColumn[i]));
             if ($(currentColumn[i]).hasClass(player)) {
                 streak = streak + 1;
             } else {
@@ -86,51 +89,82 @@ $(document).ready(function() {
         }
     }
 
-    function checkRow(currentPosition) {
+    function checkVertical(currentPosition) {
         streak = 0;
-        //
-        // currentRow =
-    }
-
-
-    function check(board) {
-        var streak = 0;
-
-
-        // function checkHorizontal() {
-        //     for (i = 0; i < slots.length; i++) {
-        //         if (slots[i].classList.contains(curPlayer)) {
-        //             counter++
-        //             if counter >= 4 {
-        //
-        //             }
-        //         } else {
-        //             counter = 0;
-        //         }
-        //     }
-        //
-        // }
-
-
-        function checkHorizontal(board) {
-            for (var y = 0; y < rows; y++) {
-                if (board[3][y] != 0) {
-                    for (var x = 0; x < columns; x++) {
-                        current = board[x][y];
-                        if (board[x][y] != 0 && current === previous) {
-                            streak++;
-                        } else {
-                            streak = 0;
-                        }
-                        previous = current;
-                        if (streak === 3) {
-                            console.log("Win!", streak);
-                        }
-                    }
-                }
+        for (var i = 0; i < board[currentPosition[0]].length; i++) {
+            if (board[currentPosition[0]][i] != 0 & board[currentPosition[0]][i] === board[currentPosition[0]][i + 1]) {
+                streak++;
+            } else {
+                streak = 0;
+            }
+            if (streak >= 3) {
+                console.log("win!");
+                break;
             }
         }
+    }
 
-        checkHorizontal(board);
+    function checkHorizontal(currentPosition) {
+        // Array position: number of rows, currentrow, -upper row
+        var searchRow = currentPosition[1] - 1;
+
+        var arr = [];
+        for (var i = 0; i < board.length; i++) {
+            arr.push(board[i][searchRow]);
+        }
+        checkForWin(arr);
+    }
+
+    function checkSlash(currentPosition) {
+        var searchColumn = currentPosition[0];
+        var searchRow = currentPosition[1] - 1;
+
+        var arr = [];
+        while (searchColumn > 0 && searchRow < 5) {
+            searchColumn--;
+            searchRow++;
+        }
+        while (searchColumn < columns && searchRow > 0) {
+            arr.push(board[searchColumn][searchRow]);
+            searchColumn++;
+            searchRow--;
+        }
+        if (arr.length >= 4) {
+            checkForWin(arr);
+        }
+    }
+
+    function checkBackslash(currentPosition) {
+        var searchColumn = currentPosition[0];
+        var searchRow = currentPosition[1] - 1;
+
+        var arr = [];
+        while (searchColumn > 0 && searchRow > 0) {
+            searchColumn--;
+            searchRow--;
+        }
+        while (searchColumn <= columns - 1 && searchRow < rows) {
+            arr.push(board[searchColumn][searchRow]);
+            searchColumn++;
+            searchRow++;
+        }
+        if (arr.length >= 4) {
+            checkForWin(arr);
+        }
+    }
+
+    function checkForWin(arr) {
+        streak = 0;
+        for (var i = 0; i < arr.length; i++) {
+            if (arr[i] != 0 & arr[i] === arr[i + 1]) {
+                streak++;
+            } else {
+                streak = 0;
+            }
+            if (streak >= 3) {
+                console.log("win!");
+                break;
+            }
+        }
     }
 });
