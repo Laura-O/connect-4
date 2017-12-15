@@ -1,0 +1,92 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.game {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 620px;
+}
+
+.up {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    height: 50px;
+}
+
+.pointer:hover {
+    background-color: gray;
+}
+
+.pointer {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    margin: 0px 5px;
+}
+
+.board {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    background-color: #1b286a;
+    margin: 5px auto;
+    width: 440px;
+    height: 380px;
+    border-top: 2px solid #ECEFF1;
+    border-left: 2px solid #ECEFF1;
+    border-radius: 20px;
+    box-shadow: 4px 4px 2px 0 #455A64;
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    margin-bottom: 10px;
+}
+
+.pos {
+    background-color: white;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin: 0px 5px;
+}
+
+#moving {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: red;
+}
+
+.coin {
+    width: 50px;
+    height: 50px;
+    margin: 0px 5px;
+}
+
+.hidden {
+    display: none;
+    z-index: -1;
+}
+
+.red {
+    background-color: red;
+}
+
+.blue {
+    background-color: blue;
+}
