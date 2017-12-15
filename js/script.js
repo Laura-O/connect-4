@@ -32,7 +32,6 @@ $(document).ready(function() {
             }
             board.append(column);
         }
-        // $(".column div:first-child").removeClass("pos empty").addClass("coin hidden");
     };
 
     var generateUpper = function() {
@@ -45,14 +44,9 @@ $(document).ready(function() {
 
     $(".up").on("click", ".pointer", function(event) {
         event.preventDefault();
-
-
         var empty = $(".column").eq(event.target.id).children(".empty:last");
 
-        animate(event.target.id);
-        empty.removeClass("empty");
-        empty.addClass(player);
-
+        animate(empty, player);
 
         currentPosition = [parseInt($(empty).attr("id").slice(0, 1)), parseInt($(empty).attr("id").slice(1, 2))];
 
@@ -155,7 +149,7 @@ $(document).ready(function() {
     }
 
     function winner() {
-        $("#modal").show();
+        $("#modal").fadeToggle("slow");
         $("#modal").append("<div>Player " + player + " has won!</div>");
     }
 
@@ -163,28 +157,31 @@ $(document).ready(function() {
         $("#modal").hide();
     });
 
-    function animate() {
+    function animate(empty, curPlayer) {
         var delay = 0;
-        $(this).parent().children().each(function() {
+        var kids = empty.parent().children(".empty");
+
+        if (curPlayer === "red") {
+            kids.toggleClass("empty").addClass("empty-red");
+        } else {
+            kids.toggleClass("empty").addClass("empty-blue");
+        }
+
+        empty.parent().children().each(function() {
             var $el = $(this);
             setTimeout(function() {
                 $el.addClass("show", 1000, "easeInOutQuad").stop().delay(50).queue(function() {
                     $(this).removeClass('show');
                 });
-            }, delay += 50); // delay 100 ms
+            }, delay += 50);
         });
-    }
-    //
-    // $('.pos').click(function() {
-    //     var delay = 0;
-    //     $(this).parent().children().each(function() {
-    //         var $el = $(this);
-    //         setTimeout(function() {
-    //             $el.addClass("show", 1000, "easeInOutQuad").stop().delay(50).queue(function() {
-    //                 $(this).removeClass('show');
-    //             });
-    //         }, delay += 50); // delay 100 ms
-    //     });
-    // });
 
+        empty.removeClass("empty");
+        setTimeout(function() {
+            $(".empty-red").removeClass("empty-red").addClass("empty");
+            $(".empty-blue").removeClass("empty-blue").addClass("empty");
+            empty.removeClass("empty").addClass(curPlayer);
+        }, kids.length * 50);
+
+    }
 });

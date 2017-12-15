@@ -58,7 +58,7 @@ body {
     background-color: #1b286a;
     width: 440px;
     height: 380px;
-    z-index: 99;
+    z-index: 9;
 }
 
 .column {
@@ -86,13 +86,24 @@ body {
     height: 50px;
 }
 
-.empty {
+.empty-red {
     background-image: linear-gradient(to bottom, white 50%, red 50%);
     background-size: 100% 200%;
     transition: background-position .01s ease;
 }
 
-.empty.show {
+.empty-blue {
+    background-image: linear-gradient(to bottom, white 50%, blue 50%);
+    background-size: 100% 200%;
+    transition: background-position .01s ease;
+}
+
+.empty-red.show {
+    background-position: 0 100%;
+    transition: background-position 0s;
+}
+
+.empty-blue.show {
     background-position: 0 100%;
     transition: background-position 0s;
 }
@@ -129,6 +140,9 @@ body {
     height: 200px;
     font-size: 2em;
     text-align: center;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .logo {
