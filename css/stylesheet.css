@@ -121,8 +121,8 @@ body {
 
 .below {
     display: flex;
-    flex-direction: column;
-    justify-content: space-around;
+    flex-direction: row;
+    justify-content: center;
     height: 150px;
 }
 
@@ -190,6 +190,25 @@ body {
     height: 40px;
     font-size: .5em;
     text-align: center;
+    font-family: "Bungee",cursive;
+}
+
+.low-button {
+    border: 2px solid #1b286a;
+    background-color: white;
+    color: #1b286a;
+    border-radius: 40px;
+    width: 150px;
+    height: 50px;
+    text-align: center;
+    margin: 20px;
+    font-size: 1.5em;
+    font-family: "Bungee",cursive;
+}
+
+.low-button:hover {
+    background-color: #1b286a;
+    color: white;
 }
 
 .logo {

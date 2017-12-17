@@ -221,10 +221,12 @@ $(document).ready(function() {
     }
 
     $("#restart").on("click", function() {
-        console.log("Reset");
         location.reload();
     });
 
+    $(".low-button").on("click", function() {
+        location.reload();
+    });
 
     /*  This function animates the falling coins in the slots.
         The empty slots each have a background which is 200% large and has the color of the player
