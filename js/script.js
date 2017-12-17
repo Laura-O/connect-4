@@ -1,14 +1,12 @@
 $(document).ready(function() {
     var rows = 6;
     var columns = 7;
-    var player = "red";
-    var streak;
 
     // Set row + column in array
     var currentPosition = [, ];
 
     // Inner array = column
-    var board = [
+    var boardPattern = [
         [0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0],
@@ -18,9 +16,25 @@ $(document).ready(function() {
         [0, 0, 0, 0, 0, 0],
     ];
 
-    var currentColumn;
-    var currentRow;
+    var boardState = JSON.parse(JSON.stringify(boardPattern));
 
+    function Player(id, name, color) {
+        this.id = id;
+        this.name = name;
+        this.color = color;
+        this.score = 0;
+    }
+
+    var player1 = new Player("player1", "Player 1", "red");
+    var player2 = new Player("player2", "Player 2", "yellow");
+
+    var curPlayer = player1;
+
+    var startGame = function() {
+        generateBoard();
+        generateUpper();
+
+    };
 
     var generateBoard = function() {
         var board = $(".board");
@@ -42,39 +56,53 @@ $(document).ready(function() {
         }
     };
 
+
+    $(".up")
+        .on("mouseover", ".pointer", function(event) {
+            event.stopPropagation();
+            $(".pointer").not(this).removeClass(curPlayer.color);
+            $(event.target).addClass(curPlayer.color);
+        })
+        .on("mouseout", ".pointer", function(event) {
+            event.stopPropagation();
+            $(event.target).removeClass().addClass("pointer");
+        });
+
     $(".up").on("click", ".pointer", function(event) {
         event.preventDefault();
+        $(event.target).removeClass().addClass("pointer");
         var empty = $(".column").eq(event.target.id).children(".empty:last");
 
-        animate(empty, player);
+        animate(empty, curPlayer);
+        makeMove(empty);
+    });
 
-        currentPosition = [parseInt($(empty).attr("id").slice(0, 1)), parseInt($(empty).attr("id").slice(1, 2))];
+    function makeMove(empty) {
+        currentPosition = [
+            parseInt($(empty).attr("id").slice(0, 1)),
+            parseInt($(empty).attr("id").slice(1, 2))
+        ];
 
         // Update board array
-        if (player == "red") {
-            board[currentPosition[0]][currentPosition[1]] = 1;
-            player = "blue";
+        if (curPlayer == player1) {
+            boardState[currentPosition[0]][currentPosition[1]] = 1;
         } else {
-            board[currentPosition[0]][currentPosition[1]] = 2;
-            player = "red";
+            boardState[currentPosition[0]][currentPosition[1]] = 2;
         }
 
         checkVertical(currentPosition);
         checkHorizontal(currentPosition);
         checkSlash(currentPosition);
         checkBackslash(currentPosition);
-    });
 
-    generateBoard();
-    generateUpper();
-    // winner();
+        curPlayer = curPlayer === player1 ? player2 : player1;
+    }
 
     function checkVertical(currentPosition) {
-        streak = 0;
         var searchColumn = currentPosition[0];
         var arr = [];
-        for (var i = 0; i < board[currentPosition[0]].length; i++) {
-            arr.push(board[searchColumn][i]);
+        for (var i = 0; i < boardState[currentPosition[0]].length; i++) {
+            arr.push(boardState[searchColumn][i]);
         }
         if (arr.length >= 4) {
             checkForWin(arr);
@@ -86,8 +114,8 @@ $(document).ready(function() {
         var searchRow = currentPosition[1];
 
         var arr = [];
-        for (var i = 0; i < board.length; i++) {
-            arr.push(board[i][searchRow]);
+        for (var i = 0; i < boardState.length; i++) {
+            arr.push(boardState[i][searchRow]);
         }
         if (arr.length >= 4) {
             checkForWin(arr);
@@ -104,7 +132,7 @@ $(document).ready(function() {
             searchRow++;
         }
         while (searchColumn < columns && searchRow > 0) {
-            arr.push(board[searchColumn][searchRow]);
+            arr.push(boardState[searchColumn][searchRow]);
             searchColumn++;
             searchRow--;
         }
@@ -123,7 +151,7 @@ $(document).ready(function() {
             searchRow--;
         }
         while (searchColumn <= columns - 1 && searchRow < rows) {
-            arr.push(board[searchColumn][searchRow]);
+            arr.push(boardState[searchColumn][searchRow]);
             searchColumn++;
             searchRow++;
         }
@@ -133,7 +161,7 @@ $(document).ready(function() {
     }
 
     function checkForWin(arr) {
-        streak = 0;
+        var streak = 0;
         for (var i = 0; i < arr.length; i++) {
             if (arr[i] != 0 & arr[i] === arr[i + 1]) {
                 streak++;
@@ -141,30 +169,52 @@ $(document).ready(function() {
                 streak = 0;
             }
             if (streak >= 3) {
-                winner(player);
-                console.log("win");
+                winner(curPlayer);
                 break;
             }
         }
     }
 
     function winner() {
-        $("#modal").fadeToggle("slow");
-        $("#modal").append("<div>Player " + player + " has won!</div>");
+        $("#" + curPlayer.id + "> .score").html(curPlayer.score + 1);
+        curPlayer.score++;
+        $(".modal-overlay").hide().delay(500).fadeIn(500);
+        $(".modal").delay(500).fadeToggle("slow");
+        $(".modal-content").html(curPlayer.name + " has won!");
     }
 
-    $("#close-modal").on("click", function() {
-        $("#modal").hide();
+    $(".x-button").on("click", function() {
+        $(".modal").hide();
+        $(".modal-overlay").hide();
+        continueGame();
+    });
+
+    $("#continue").on("click", function() {
+        $(".modal").hide();
+        $(".modal-overlay").hide();
+        continueGame();
+    });
+
+    function continueGame() {
+        boardState = JSON.parse(JSON.stringify(boardPattern));
+        $(".column > .pos").each(function() {
+            $(this).removeClass().addClass("pos empty");
+        });
+    }
+
+    $("#restart").on("click", function() {
+        console.log("Reset");
+        location.reload();
     });
 
     function animate(empty, curPlayer) {
         var delay = 0;
         var kids = empty.parent().children(".empty");
 
-        if (curPlayer === "red") {
+        if (curPlayer.color == "red") {
             kids.toggleClass("empty").addClass("empty-red");
         } else {
-            kids.toggleClass("empty").addClass("empty-blue");
+            kids.toggleClass("empty").addClass("empty-yellow");
         }
 
         empty.parent().children().each(function() {
@@ -179,9 +229,39 @@ $(document).ready(function() {
         empty.removeClass("empty");
         setTimeout(function() {
             $(".empty-red").removeClass("empty-red").addClass("empty");
-            $(".empty-blue").removeClass("empty-blue").addClass("empty");
-            empty.removeClass("empty").addClass(curPlayer);
+            $(".empty-yellow").removeClass("empty-yellow").addClass("empty");
+            empty.removeClass("empty").addClass(curPlayer.color);
         }, kids.length * 50);
 
     }
+
+    // Key events
+    var keyPos = 0;
+    $(document).keydown(function(e) {
+        e.preventDefault();
+        if (e.which == 39) {
+            $(".pointer").removeClass(curPlayer.color);
+            $(".pointer").eq(keyPos).addClass(curPlayer.color);
+            if (keyPos < $(".pointer").length) {
+                keyPos++;
+            } else {
+                keyPos = 0;
+            }
+        } else if (e.which == 37) {
+            if (keyPos == 0) {
+                keyPos = $(".pointer").length - 1;
+            } else {
+                keyPos--;
+            }
+            $(".pointer").removeClass(curPlayer.color);
+            $(".pointer").eq(keyPos - 1).addClass(curPlayer.color);
+        } else if (e.which == 32) {
+            var empty = $(".column").eq(keyPos - 1).children(".empty:last");
+            $(".pointer").removeClass(curPlayer.color);
+            animate(empty, curPlayer);
+            makeMove(empty);
+        }
+    });
+
+    startGame();
 });
