@@ -16,6 +16,7 @@ $(document).ready(function() {
         [0, 0, 0, 0, 0, 0],
     ];
 
+    // Generate new variable for the state of the board
     var boardState = JSON.parse(JSON.stringify(boardPattern));
 
     function Player(id, name, color) {
@@ -33,7 +34,6 @@ $(document).ready(function() {
     var startGame = function() {
         generateBoard();
         generateUpper();
-
     };
 
     var generateBoard = function() {
@@ -48,6 +48,7 @@ $(document).ready(function() {
         }
     };
 
+    // Generate the row above the board
     var generateUpper = function() {
         var up = $(".up");
         for (var i = 0; i < columns; i++) {
@@ -56,11 +57,12 @@ $(document).ready(function() {
         }
     };
 
-
+    // Show the coins when the player mouseovers over the slots
     $(".up")
         .on("mouseover", ".pointer", function(event) {
             event.stopPropagation();
             $(".pointer").not(this).removeClass(curPlayer.color);
+            // Show a gray coin of the slot is full
             if ($(".column").eq(event.target.id).hasClass("blocked")) {
                 $(event.target).addClass("gray");
             } else {
@@ -72,6 +74,7 @@ $(document).ready(function() {
             $(event.target).removeClass().addClass("pointer");
         });
 
+    // Add coin on click
     $(".up").not(".blocked").on("click", ".pointer", function(event) {
         event.preventDefault();
         $(event.target).removeClass().addClass("pointer");
@@ -85,6 +88,7 @@ $(document).ready(function() {
     });
 
     function makeMove(empty) {
+        // Get the current position from the attribute
         currentPosition = [
             parseInt($(empty).attr("id").slice(0, 1)),
             parseInt($(empty).attr("id").slice(1, 2))
@@ -102,9 +106,16 @@ $(document).ready(function() {
         checkSlash(currentPosition);
         checkBackslash(currentPosition);
 
+        // Change the current player
         curPlayer = curPlayer === player1 ? player2 : player1;
     }
 
+    /*
+        All the check functions work in a similar way: they generate an array based on the current
+        position and check if there is a streak of >= 4 coins.
+        For checkSlash and checkBackslash this array has to be generated in a while-loop, which loops
+        on the diagonal axis until the edge of the board is reached.
+    */
     function checkVertical(currentPosition) {
         var searchColumn = currentPosition[0];
         var arr = [];
@@ -214,6 +225,13 @@ $(document).ready(function() {
         location.reload();
     });
 
+
+    /*  This function animates the falling coins in the slots.
+        The empty slots each have a background which is 200% large and has the color of the player
+        on one side and white on the other. When the slot is clicked, the background is moved so the coloured
+        part becomes visible and is immediately set back.
+        The delay for each of the children makes it look like the coin is falling to the bottom. */
+
     function animate(empty, curPlayer) {
         var delay = 0;
         var kids = empty.parent().children(".empty");
@@ -228,7 +246,7 @@ $(document).ready(function() {
             var $el = $(this);
             setTimeout(function() {
                 $el.addClass("show", 1000, "easeInOutQuad").stop().delay(50).queue(function() {
-                    $(this).removeClass('show');
+                    $(this).removeClass("show");
                 });
             }, delay += 50);
         });
@@ -239,7 +257,6 @@ $(document).ready(function() {
             $(".empty-yellow").removeClass("empty-yellow").addClass("empty");
             empty.removeClass("empty").addClass(curPlayer.color);
         }, kids.length * 50);
-
     }
 
     // Key events

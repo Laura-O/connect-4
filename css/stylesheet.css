@@ -108,7 +108,7 @@ body {
 }
 
 .red {
-    background-color: #FF0000;
+    background-color: #E24E42;
 }
 
 .yellow {
@@ -192,15 +192,11 @@ body {
     text-align: center;
 }
 
-.modal-button:hover {
-
-}
-
 .logo {
     display: inline;
     border-radius: 50%;
     background-color: #1b286a;
-    padding: 10px;
+    padding: 7px;
     width: 70px;
     height: 70px;
     color: white;
@@ -239,22 +235,23 @@ body {
     bottom: 0;
     border-radius: 8px;
     box-shadow: 4px 4px 2px 0 #455A64;
-    border-top: 2px solid #ECEFF1;
-    border-left: 2px solid #ECEFF1;
+    border-top: 1px solid #ECEFF1;
+    border-left: 1px solid #ECEFF1;
     font-size: 1em;
+    margin-left: 5px;
+}
+
+#player1 {
+    box-shadow: 4px 4px 2px 0 #E24E42;
+}
+
+#player2 {
+    box-shadow: 4px 4px 2px 0 #ffd20d;
 }
 
 .player p {
     text-align: center;
 }
-/*
-#player1 {
-    margin: 40px 50px 0px 20px;
-}
-
-#player2 {
-    margin: 40px 20px 0px 50px;
-} */
 
 .score {
     margin: 5px;
