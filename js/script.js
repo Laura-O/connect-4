@@ -61,17 +61,24 @@ $(document).ready(function() {
         .on("mouseover", ".pointer", function(event) {
             event.stopPropagation();
             $(".pointer").not(this).removeClass(curPlayer.color);
-            $(event.target).addClass(curPlayer.color);
+            if ($(".column").eq(event.target.id).hasClass("blocked")) {
+                $(event.target).addClass("gray");
+            } else {
+                $(event.target).addClass(curPlayer.color);
+            }
         })
         .on("mouseout", ".pointer", function(event) {
             event.stopPropagation();
             $(event.target).removeClass().addClass("pointer");
         });
 
-    $(".up").on("click", ".pointer", function(event) {
+    $(".up").not(".blocked").on("click", ".pointer", function(event) {
         event.preventDefault();
         $(event.target).removeClass().addClass("pointer");
         var empty = $(".column").eq(event.target.id).children(".empty:last");
+        if ($(".column").eq(event.target.id).children(".empty").length <= 1) {
+            $(".column").eq(event.target.id).addClass("blocked");
+        }
 
         animate(empty, curPlayer);
         makeMove(empty);

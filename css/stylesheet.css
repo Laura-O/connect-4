@@ -115,6 +115,10 @@ body {
     background-color: #FFD20D;
 }
 
+.gray {
+    background-color: gray;
+}
+
 .below {
     display: flex;
     flex-direction: column;
