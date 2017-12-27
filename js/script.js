@@ -3,7 +3,7 @@ $(document).ready(function() {
     var columns = 7;
 
     // Set row + column in array
-    var currentPosition = [, ];
+    var currentPosition = [,];
 
     // Inner array = column
     var boardPattern = [
@@ -39,9 +39,13 @@ $(document).ready(function() {
     var generateBoard = function() {
         var board = $(".board");
         for (var x = 0; x < columns; x++) {
-            var column = $("<div>").addClass("column").attr("id", x);
+            var column = $("<div>")
+                .addClass("column")
+                .attr("id", x);
             for (var y = 0; y < rows; y++) {
-                var row = $("<div>").addClass("pos empty").attr("id", `${x}${y}`);
+                var row = $("<div>")
+                    .addClass("pos empty")
+                    .attr("id", `${x}${y}`);
                 column.append(row);
             }
             board.append(column);
@@ -52,7 +56,9 @@ $(document).ready(function() {
     var generateUpper = function() {
         var up = $(".up");
         for (var i = 0; i < columns; i++) {
-            var coin = $("<div>").addClass("pointer").attr("id", i);
+            var coin = $("<div>")
+                .addClass("pointer")
+                .attr("id", i);
             up.append(coin);
         }
     };
@@ -61,9 +67,15 @@ $(document).ready(function() {
     $(".up")
         .on("mouseover", ".pointer", function(event) {
             event.stopPropagation();
-            $(".pointer").not(this).removeClass(curPlayer.color);
+            $(".pointer")
+                .not(this)
+                .removeClass(curPlayer.color);
             // Show a gray coin of the slot is full
-            if ($(".column").eq(event.target.id).hasClass("blocked")) {
+            if (
+                $(".column")
+                    .eq(event.target.id)
+                    .hasClass("blocked")
+            ) {
                 $(event.target).addClass("gray");
             } else {
                 $(event.target).addClass(curPlayer.color);
@@ -71,27 +83,49 @@ $(document).ready(function() {
         })
         .on("mouseout", ".pointer", function(event) {
             event.stopPropagation();
-            $(event.target).removeClass().addClass("pointer");
+            $(event.target)
+                .removeClass()
+                .addClass("pointer");
         });
 
     // Add coin on click
-    $(".up").not(".blocked").on("click", ".pointer", function(event) {
-        event.preventDefault();
-        $(event.target).removeClass().addClass("pointer");
-        var empty = $(".column").eq(event.target.id).children(".empty:last");
-        if ($(".column").eq(event.target.id).children(".empty").length <= 1) {
-            $(".column").eq(event.target.id).addClass("blocked");
-        }
+    $(".up")
+        .not(".blocked")
+        .on("click", ".pointer", function(event) {
+            event.preventDefault();
+            $(event.target)
+                .removeClass()
+                .addClass("pointer");
+            var empty = $(".column")
+                .eq(event.target.id)
+                .children(".empty:last");
+            if (
+                $(".column")
+                    .eq(event.target.id)
+                    .children(".empty").length <= 1
+            ) {
+                $(".column")
+                    .eq(event.target.id)
+                    .addClass("blocked");
+            }
 
-        animate(empty, curPlayer);
-        makeMove(empty);
-    });
+            animate(empty, curPlayer);
+            makeMove(empty);
+        });
 
     function makeMove(empty) {
         // Get the current position from the attribute
         currentPosition = [
-            parseInt($(empty).attr("id").slice(0, 1)),
-            parseInt($(empty).attr("id").slice(1, 2))
+            parseInt(
+                $(empty)
+                    .attr("id")
+                    .slice(0, 1),
+            ),
+            parseInt(
+                $(empty)
+                    .attr("id")
+                    .slice(1, 2),
+            ),
         ];
 
         // Update board array
@@ -181,7 +215,7 @@ $(document).ready(function() {
     function checkForWin(arr) {
         var streak = 0;
         for (var i = 0; i < arr.length; i++) {
-            if (arr[i] != 0 & arr[i] === arr[i + 1]) {
+            if ((arr[i] != 0) & (arr[i] === arr[i + 1])) {
                 streak++;
             } else {
                 streak = 0;
@@ -196,8 +230,13 @@ $(document).ready(function() {
     function winner() {
         $("#" + curPlayer.id + "> .score").html(curPlayer.score + 1);
         curPlayer.score++;
-        $(".modal-overlay").hide().delay(500).fadeIn(500);
-        $(".modal").delay(500).fadeToggle("slow");
+        $(".modal-overlay")
+            .hide()
+            .delay(500)
+            .fadeIn(500);
+        $(".modal")
+            .delay(500)
+            .fadeToggle("slow");
         $(".modal-content").html(curPlayer.name + " has won!");
     }
 
@@ -216,7 +255,9 @@ $(document).ready(function() {
     function continueGame() {
         boardState = JSON.parse(JSON.stringify(boardPattern));
         $(".column > .pos").each(function() {
-            $(this).removeClass().addClass("pos empty");
+            $(this)
+                .removeClass()
+                .addClass("pos empty");
         });
     }
 
@@ -244,19 +285,30 @@ $(document).ready(function() {
             kids.toggleClass("empty").addClass("empty-yellow");
         }
 
-        empty.parent().children().each(function() {
-            var $el = $(this);
-            setTimeout(function() {
-                $el.addClass("show", 1000, "easeInOutQuad").stop().delay(50).queue(function() {
-                    $(this).removeClass("show");
-                });
-            }, delay += 50);
-        });
+        empty
+            .parent()
+            .children()
+            .each(function() {
+                var $el = $(this);
+                setTimeout(function() {
+                    $el
+                        .addClass("show", 1000, "easeInOutQuad")
+                        .stop()
+                        .delay(50)
+                        .queue(function() {
+                            $(this).removeClass("show");
+                        });
+                }, (delay += 50));
+            });
 
         empty.removeClass("empty");
         setTimeout(function() {
-            $(".empty-red").removeClass("empty-red").addClass("empty");
-            $(".empty-yellow").removeClass("empty-yellow").addClass("empty");
+            $(".empty-red")
+                .removeClass("empty-red")
+                .addClass("empty");
+            $(".empty-yellow")
+                .removeClass("empty-yellow")
+                .addClass("empty");
             empty.removeClass("empty").addClass(curPlayer.color);
         }, kids.length * 50);
     }
@@ -267,7 +319,9 @@ $(document).ready(function() {
         e.preventDefault();
         if (e.which == 39) {
             $(".pointer").removeClass(curPlayer.color);
-            $(".pointer").eq(keyPos).addClass(curPlayer.color);
+            $(".pointer")
+                .eq(keyPos)
+                .addClass(curPlayer.color);
             if (keyPos < $(".pointer").length) {
                 keyPos++;
             } else {
@@ -280,9 +334,13 @@ $(document).ready(function() {
                 keyPos--;
             }
             $(".pointer").removeClass(curPlayer.color);
-            $(".pointer").eq(keyPos - 1).addClass(curPlayer.color);
+            $(".pointer")
+                .eq(keyPos - 1)
+                .addClass(curPlayer.color);
         } else if (e.which == 32) {
-            var empty = $(".column").eq(keyPos - 1).children(".empty:last");
+            var empty = $(".column")
+                .eq(keyPos - 1)
+                .children(".empty:last");
             $(".pointer").removeClass(curPlayer.color);
             animate(empty, curPlayer);
             makeMove(empty);

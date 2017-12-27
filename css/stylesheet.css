@@ -5,7 +5,7 @@
 body {
     align-items: center;
     height: 100%;
-    font-family: 'Bungee', cursive;
+    font-family: "Bungee", cursive;
     color: #333;
     background-color: #fff;
 }
@@ -56,9 +56,9 @@ body {
     justify-content: center;
     z-index: 9;
     margin: 5px auto;
-    box-shadow: 4px 4px 2px 0 #455A64;
-    border-top: 2px solid #ECEFF1;
-    border-left: 2px solid #ECEFF1;
+    box-shadow: 4px 4px 2px 0 #455a64;
+    border-top: 2px solid #eceff1;
+    border-left: 2px solid #eceff1;
     border-radius: 20px;
     background-color: #1b286a;
     width: 440px;
@@ -81,14 +81,14 @@ body {
 }
 
 .empty-red {
-    transition: background-position .01s ease;
-    background-image: linear-gradient(to bottom, white 50%, #E24E42 50%);
+    transition: background-position 0.01s ease;
+    background-image: linear-gradient(to bottom, white 50%, #e24e42 50%);
     background-size: 100% 200%;
 }
 
 .empty-yellow {
-    transition: background-position .01s ease;
-    background-image: linear-gradient(to bottom, white 50%, #FFD20D 50%);
+    transition: background-position 0.01s ease;
+    background-image: linear-gradient(to bottom, white 50%, #ffd20d 50%);
     background-size: 100% 200%;
 }
 
@@ -108,11 +108,11 @@ body {
 }
 
 .red {
-    background-color: #E24E42;
+    background-color: #e24e42;
 }
 
 .yellow {
-    background-color: #FFD20D;
+    background-color: #ffd20d;
 }
 
 .gray {
@@ -133,7 +133,7 @@ body {
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 99;
-    box-shadow: 0px 0px 20px rgba(56, 56, 56, .2);
+    box-shadow: 0px 0px 20px rgba(56, 56, 56, 0.2);
     border-radius: 15px;
     background-color: white;
     padding: 20px 30px;
@@ -151,7 +151,7 @@ body {
     left: 0;
     z-index: 99;
     transition: background-color 10s ease-in-out;
-    background-color: rgba(0, 0, 0, .3);
+    background-color: rgba(0, 0, 0, 0.3);
     width: 100%;
     height: 100%;
 }
@@ -188,9 +188,9 @@ body {
     border-radius: 100px;
     width: 100px;
     height: 40px;
-    font-size: .5em;
+    font-size: 0.5em;
     text-align: center;
-    font-family: "Bungee",cursive;
+    font-family: "Bungee", cursive;
 }
 
 .low-button {
@@ -203,7 +203,7 @@ body {
     text-align: center;
     margin: 20px;
     font-size: 1.5em;
-    font-family: "Bungee",cursive;
+    font-family: "Bungee", cursive;
 }
 
 .low-button:hover {
@@ -233,7 +233,7 @@ body {
     top: -5px;
     transform: rotate(360deg);
     transition: all 1s ease-in-out;
-    box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, .2);
+    box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.2);
 }
 
 .title {
@@ -253,15 +253,15 @@ body {
     font-size: 1em;
     bottom: 0;
     border-radius: 8px;
-    box-shadow: 4px 4px 2px 0 #455A64;
-    border-top: 1px solid #ECEFF1;
-    border-left: 1px solid #ECEFF1;
+    box-shadow: 4px 4px 2px 0 #455a64;
+    border-top: 1px solid #eceff1;
+    border-left: 1px solid #eceff1;
     font-size: 1em;
     margin-left: 5px;
 }
 
 #player1 {
-    box-shadow: 4px 4px 2px 0 #E24E42;
+    box-shadow: 4px 4px 2px 0 #e24e42;
 }
 
 #player2 {
@@ -274,7 +274,7 @@ body {
 
 .score {
     margin: 5px;
-    font-family: 'Bungee Shade', cursive;
+    font-family: "Bungee Shade", cursive;
 }
 
 .pointer div {
